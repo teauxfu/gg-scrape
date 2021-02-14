@@ -1,6 +1,6 @@
 # gg-scrape
 
-I made a little Python console app that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg
+I made a little Python script that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg
 The goal was to not have to open a browser tab to check a build.
 The interface emulates optional command line arguments, so you can specify a role with a flag
 - -m or -mid
