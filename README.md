@@ -10,5 +10,7 @@ The interface emulates optional command line arguments, so you can specify a rol
 - -s or -sup
 
 ![screenshot of the app in use](/Capture.PNG)
+
+
 Depends on the anytree, beautifulsoup4, and requests Python libraries.
 The HTML is requested and parsed sequentially, so it's rather slow.I may or may not make it async later.
