@@ -23,8 +23,8 @@ def main(
     # make soup from the URL 
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser') 
-    c = soup.find('p', class_='css-1yvcufn eo6ba8g4').text
-    r = soup.find('div', class_='css-p3pzap eo6ba8g5').text
+    c = soup.find('p', class_='css-1yvcufn eo6ba8g4').text # string with champ name
+    r = soup.find('div', class_='css-p3pzap eo6ba8g5').text # string with role and patch # 
 
     # make a tree to organize / render later
     root = Node(f"{c} {r}")
@@ -67,7 +67,6 @@ def main(
     
     skills = Node("Skill Priority", parent=root)
     bowl = soup.find_all('p', class_='typography__Caption-sc-1mpsx83-11 typography__CaptionBold-sc-1mpsx83-12 dwtPBh')[1:4] # the first is 'Passive' and the rest are redundant
-    
     for spoonful in bowl:
         s = spoonful.text
         Node(s, parent=skills)
