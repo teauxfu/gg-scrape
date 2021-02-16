@@ -1,6 +1,6 @@
 # gg-scrape
 
-A little Python script that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg
+A little Python CLI app that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg
 The goal was to not have to open a browser tab to check a build.
 
 ```
