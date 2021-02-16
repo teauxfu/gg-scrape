@@ -1,22 +1,22 @@
+import typer
 from anytree import Node, RenderTree
 from bs4 import BeautifulSoup
 import requests
 import time
-    
-if __name__ == '__main__':
-    print()
-    q = input("champion -role >> ")
+
+
+def main(
+    champion: str = typer.Argument(..., help="The champion you're playing"),
+    role: str = typer.Argument("", help="The role you're playing", show_default=False)
+):
 
     start = time.time() # for funsies
-    q = q.split(' -')
-    champion = q[0]
-    role = q[-1]
-
-    if role == 'm' or role == "mid" : role = "MID"
-    elif role == 'a' or role == 'b' or role == "bot" or role =="adc": role = "ADC"
-    elif role == 's' or role == "sup": role = "SUPPORT"
-    elif role == 't' or role == "top": role = "TOP"  
-    elif role == 'j' or role == "jg": role = "JUNGLE"
+    
+    if role.startswith('m'): role = "mid"
+    elif role.startswith(('a', 'b')): role = "adc"
+    elif role.startswith('s'): role = "support"
+    elif role.startswith('t'): role = "top"  
+    elif role.startswith('j'): role = "jungle"
     else: role = ""
     
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     bowl = soup.find_all('img', class_='css-1la33yl e16p94fx0')
     for spoonful in bowl:
         r = spoonful['alt']
-        rune = Node(r, parent=runes)
+        Node(r, parent=runes)
 
     # get the shards
     bowl = soup.find_all('img', class_='css-1vgqbrs ed9gm2s1')
@@ -49,17 +49,18 @@ if __name__ == '__main__':
     for spoonful in bowl:
         i = spoonful['src'].split('.png')[0][-4:] # was blah/####.png
         s = conversion.get(i)
-        shard = Node(s, parent=runes)
+        Node(s, parent=runes)
 
     # get the build 
     build = Node("Build", parent=root)
     bowl = soup.find_all('img', class_='ehobrmq6 css-1wpgt6j e14wqe2d0')[-6:] # only want final 6 items
     for spoonful in bowl:
         i = spoonful['alt']
-        item = Node(i, parent=build)
+        Node(i, parent=build)
     
     # from champion.gg instead ...
-    if role == 'MID': role = 'Middle'
+    if role.startswith('m'): role = 'Middle'
+    
     url = f"https://champion.gg/champion/{champion}/{role}"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -69,12 +70,18 @@ if __name__ == '__main__':
     
     for spoonful in bowl:
         s = spoonful.text
-        skill = Node(s, parent=skills)
+        Node(s, parent=skills)
 
     # print the thing
     print()
     for pre, _, node in RenderTree(root):
         print(f"{pre}{node.name}")
-    print()
-    print(f"Finished in {round(time.time() - start, 3)} s")
+
+    print(f"\nFinished in {round(time.time() - start, 3)} s")
     input()
+
+
+    
+if __name__ == '__main__':
+    typer.run(main)
+    
