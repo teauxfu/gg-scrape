@@ -6,7 +6,7 @@ import time
 
 app = typer.Typer()
 
-@app.callback()
+@app.command()
 def main(
     champion: str = typer.Argument(..., help="The champion you're playing"),
     role: str = typer.Argument("", help="The role you're playing", show_default=False)
@@ -73,7 +73,6 @@ def main(
         Node(s, parent=skills)
 
     # print the thing
-    print()
     for pre, _, node in RenderTree(root):
         print(f"{pre}{node.name}")
 

@@ -4,7 +4,7 @@ A little Python CLI app that provides a League champion runes/build from mobalyt
 The goal was to not have to open a browser tab to check a build.
 
 ```
-Usage: ggs.py [OPTIONS] CHAMPION [ROLE]
+Usage: ggs [OPTIONS] CHAMPION [ROLE]
 ```
 
 ![screenshot of the app in use](img/Capture.PNG)
