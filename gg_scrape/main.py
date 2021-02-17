@@ -76,5 +76,5 @@ def main(
     for pre, _, node in RenderTree(root):
         print(f"{pre}{node.name}")
 
-    print(f"\nFinished in {round(time.time() - start, 3)} s")
+    print(f"\nFinished in {round(time.time() - start, 3)} s     ✨ glhf ✨")
     input()
