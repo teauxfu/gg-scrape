@@ -11,7 +11,7 @@ python -m pip install gg-scrape
 
 ## Usage
 ```
-ggs [OPTIONS] CHAMPION [ROLE]
+ggs CHAMPION [ROLE]
 ```
 
 ![screenshot of the app in use](img/Capture.PNG)
