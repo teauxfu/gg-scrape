@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "gg-scrape"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "A little Python CLI app that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg"
 authors = ["Alex Whittington <alexmw777@gmail.com>"]
 readme = "README.md"
+repository = "https://github.com/teauxfu/gg-scrape"
 
 [tool.poetry.dependencies]
 python = "^3.9"
