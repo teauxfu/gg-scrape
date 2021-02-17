@@ -4,14 +4,15 @@ from bs4 import BeautifulSoup
 import requests
 import time
 
+app = typer.Typer()
 
+@app.callback()
 def main(
     champion: str = typer.Argument(..., help="The champion you're playing"),
     role: str = typer.Argument("", help="The role you're playing", show_default=False)
 ):
 
     start = time.time() # for funsies
-    
     if role.startswith('m'): role = "mid"
     elif role.startswith(('a', 'b')): role = "adc"
     elif role.startswith('s'): role = "support"
@@ -78,9 +79,3 @@ def main(
 
     print(f"\nFinished in {round(time.time() - start, 3)} s")
     input()
-
-
-    
-if __name__ == '__main__':
-    typer.run(main)
-    

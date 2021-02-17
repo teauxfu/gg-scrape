@@ -7,7 +7,7 @@ The goal was to not have to open a browser tab to check a build.
 Usage: ggs.py [OPTIONS] CHAMPION [ROLE]
 ```
 
-![screenshot of the app in use](/Capture.PNG)
+![screenshot of the app in use](img/Capture.PNG)
 
 
 Depends on the anytree, beautifulsoup4, typer, and requests Python libraries.
