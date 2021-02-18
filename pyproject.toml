@@ -1,16 +1,19 @@
-[[source]]
-url = "https://pypi.org/simple"
-verify_ssl = true
-name = "pypi"
+[tool.poetry]
+name = "gg-scrape"
+version = "0.1.0"
+description = ""
+authors = ["Mycsina <andremacardoso@gmail.com>"]
 
-[packages]
+[tool.poetry.dependencies]
+python = "^3.9"
 bs4 = "*"
 requests = "*"
 anytree = "*"
 lxml = "*"
 click = "*"
 
-[dev-packages]
+[tool.poetry.dev-dependencies]
+black = "*"
 flake8 = "*"
 flake8-import-order = "*"
 flake8-bugbear = "*"
@@ -31,5 +34,6 @@ restructuredtext-lint = "*"
 entrypoints = "*"
 docutils = "*"
 
-[requires]
-python_version = "3.9"
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
