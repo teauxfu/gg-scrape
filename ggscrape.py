@@ -1,8 +1,10 @@
 from anytree import Node, RenderTree
 from bs4 import BeautifulSoup
 import click
+from click import core
 import requests
 import time
+import re
 
 
 @click.command()
@@ -22,7 +24,18 @@ def clickparser(champion, role, matchup, source):
         role = "top"
     elif role.startswith("j"):
         role = "jungle"
+    if source.startswith("m"):
+        root = mobalytics_scraper(champion, role)
+    else:
+        root = None
+        # print the thing
+    for pre, _, node in RenderTree(root):
+        print(f"{pre}{node.name}")
+    print(f"\nFinished in {round(time.time() - start, 3)} s")
+    input()
 
+
+def mobalytics_scraper(champion, role):
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
     # make soup from the URL
     page = requests.get(url)
@@ -31,37 +44,59 @@ def clickparser(champion, role, matchup, source):
     r = soup.find("div", class_="css-p3pzap eo6ba8g5").text
 
     # make a tree to organize / render later
-    root = Node(f"{c} {r}")
+    root = Node(f"{c} {r} from Mobalytics")
 
     # get the runes
     runes = Node("Runes", parent=root)
-    bowl = soup.find_all("img", class_="css-1la33yl e16p94fx0")
-    for spoonful in bowl:
-        r = spoonful["alt"]
+    matches = soup.find_all("img", class_="css-1la33yl e16p94fx0")
+    for entry in matches:
+        r = entry["alt"]
         Node(r, parent=runes)
 
     # get the shards
-    bowl = soup.find_all("img", class_="css-1vgqbrs ed9gm2s1")
+    matches = soup.find_all("img", class_="css-1vgqbrs ed9gm2s1")
     conversion = {
         "5001": "Health",
         "5002": "Armor",
         "5003": "Magic Resist",
         "5005": "Attack Speed",
         "5007": "Ability Haste",
-        "5008": "Adaptive Force",
+        "5008": "Adaptive Force"
     }
-    for spoonful in bowl:
-        i = spoonful["src"].split(".png")[0][-4:]  # was blah/####.png
-        s = conversion.get(i)
-        Node(s, parent=runes)
-
-    # get the build
+    shards = Node("Shards", parent=root)
+    for entry in matches:
+        shard_id = entry["src"].split(".png")[0][-4:]  # was blah/####.png
+        shard = conversion.get(shard_id)
+        Node(shard, parent=shards)
     build = Node("Build", parent=root)
-    bowl = soup.find_all("img", class_="ehobrmq6 css-1wpgt6j e14wqe2d0")[-6:]  # only want final 6 items
-    for spoonful in bowl:
-        i = spoonful["alt"]
-        Node(i, parent=build)
+    skill = Node("Skill Priority", parent=root)
+    starter = Node("Starter Items", parent=build)
+    early = Node("Early Items", parent=build)
+    core = Node("Core Items", parent=build)
+    full = Node("Full Build", parent=build)
+    situational = Node("Situational Items", parent=build)
+    for cycle, entry in enumerate(soup.find_all("div", class_="ednsys62 css-1taoj5l ehobrmq2")):
+        if cycle == 0:
+            for content in entry.contents:
+                Node(re.findall(r"alt=\"(.*)\" c", str(content))[0], starter)
+        if cycle == 1:
+            for content in entry.contents:
+                Node(re.findall(r"alt=\"(.*)\" c", str(content))[0], early)
+        if cycle == 2:
+            for content in entry.contents:
+                Node(re.findall(r"alt=\"(.*)\" c", str(content))[0], core)
+        if cycle == 3:
+            for content in entry.contents:
+                Node(re.findall(r"alt=\"(.*)\" c", str(content))[0], full)
+    for entry in soup.find_all("div", class_="css-143dzw8 es5thxd2"):
+        Node(re.findall(r"alt=\"(.*)\" c", str(entry.contents[0]))[0], situational)
+    for entry in soup.find_all("div", class_="css-70qvj9 ek7zqkr0")[0].contents:
+        if entry.name == "p":
+            Node(entry.text, skill)
+    return root
 
+
+def champion_gg_scraper(champion, role, matchup):
     # from champion.gg instead ...
     if role.startswith("m"):
         role = "Middle"
@@ -79,11 +114,7 @@ def clickparser(champion, role, matchup, source):
         s = spoonful.text
         Node(s, parent=skills)
 
-    # print the thing
-    for pre, _, node in RenderTree(root):
-        print(f"{pre}{node.name}")
-    print(f"\nFinished in {round(time.time() - start, 3)} s")
-    input()
+
 
 
 clickparser()
