@@ -11,6 +11,7 @@ requests = "*"
 anytree = "*"
 lxml = "*"
 click = "*"
+typer = "^0.3.2"
 
 [tool.poetry.dev-dependencies]
 black = "*"
