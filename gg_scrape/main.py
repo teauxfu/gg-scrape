@@ -15,10 +15,9 @@ def main(
     start = time.time() # for funsies
     if role.startswith('m'): role = "mid"
     elif role.startswith(('a', 'b')): role = "adc"
-    elif role.startswith('s'): role = "support"
-    elif role.startswith('t'): role = "top"  
     elif role.startswith('j'): role = "jungle"
-    else: role = ""
+    elif role.startswith('t'): role = "top"  
+    elif role.startswith('s'): role = "support"
     
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
     # make soup from the URL 
