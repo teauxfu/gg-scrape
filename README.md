@@ -1,16 +1,25 @@
 # gg-scrape
+A little Python CLI app that provides a League of Legends champion build by scraping the web.
 
-I made a little Python script that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg
-The goal was to not have to open a browser tab to check a build.
-The interface emulates optional command line arguments, so you can specify a role with a flag
-- -m or -mid
-- -a or -adc  OR  -b or -bot
-- -t or -top
-- -j or -jg
-- -s or -sup
+The goal was to not have to open a browser tab (or be advertised to) to quickly check a build before a match.
+The HTML is requested and parsed sequentially, so it's somewhat slow (but still faster than opening a browser).
 
-![screenshot of the app in use](/Capture.PNG)
+## Installation
+```
+python -m pip install gg-scrape
+```
 
+## Usage
+```
+ggs CHAMPION [ROLE]
+```
 
-Depends on the anytree, beautifulsoup4, and requests Python libraries.
-The HTML is requested and parsed sequentially, so it's rather slow.I may or may not make it async later.
+![screenshot of the app in use](img/Capture.PNG)
+
+## Requirements
+Depends on the anytree, beautifulsoup4, typer, and requests Python libraries.
+
+## Contributions
+Thanks to @Mycsina for feedback and helping to improve and expand this package's functionality!
+
+Pull requests are welcome. 

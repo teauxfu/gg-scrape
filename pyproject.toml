@@ -1,39 +1,6 @@
 [tool.poetry]
 name = "gg-scrape"
-version = "0.1.0"
-description = ""
-authors = ["Mycsina <andremacardoso@gmail.com>"]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-bs4 = "*"
-requests = "*"
-anytree = "*"
-lxml = "*"
-click = "*"
-typer = "^0.3.2"
-
-[tool.poetry.dev-dependencies]
-black = "*"
-flake8 = "*"
-flake8-import-order = "*"
-flake8-bugbear = "*"
-flake8-comprehensions = "*"
-flake8-functions = "*"
-flake8-return = "*"
-flake8-strings = "*"
-flake8-blind-except = "*"
-flake8-builtins = "*"
-flake8-logging-format = "*"
-flake8-docstrings = "*"
-flake8-rst-docstrings = "*"
-mccabe = "*"
-pycodestyle = "*"
-pydocstyle = "*"
-pyflakes = "*"
-restructuredtext-lint = "*"
-entrypoints = "*"
-docutils = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
