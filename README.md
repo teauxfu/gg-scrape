@@ -1,8 +1,8 @@
 # gg-scrape
-A little Python CLI app that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg
+A little Python CLI app that provides a League of Legends champion build by scraping the web.
 
-The goal was to not have to open a browser tab to check a build.
-The HTML is requested and parsed sequentially, so it's rather slow.
+The goal was to not have to open a browser tab (or be advertised to) to quickly check a build before a match.
+The HTML is requested and parsed sequentially, so it's somewhat slow (but still faster than opening a browser).
 
 ## Installation
 ```
