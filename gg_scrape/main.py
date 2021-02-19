@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 import requests
 import time
 
-app = typer.Typer()
+ggs = typer.Typer()
 
-@app.command()
+@ggs.command()
 def main(
     champion: str = typer.Argument(..., help="The champion you're playing"),
     role: str = typer.Argument("", help="The role you're playing", show_default=False)

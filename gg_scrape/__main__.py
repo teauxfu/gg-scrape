@@ -1,4 +1,6 @@
+# this file exists to support calling the package as 'python -m pip ggs'
 # https://typer.tiangolo.com/tutorial/package/#support-python-m-optional
 
-from .main import app
-app(prog_name='ggs')
+
+from gg_scrape.main import ggs
+ggs(prog_name='ggs')
