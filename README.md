@@ -18,3 +18,8 @@ ggs CHAMPION [ROLE]
 
 ## Requirements
 Depends on the anytree, beautifulsoup4, typer, and requests Python libraries.
+
+## Contributions
+Thanks to @Mycsina for feedback and helping to improve and expand this package's functionality!
+
+Pull requests are welcome. 
