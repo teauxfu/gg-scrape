@@ -14,7 +14,7 @@ beautifulsoup4 = "^4.9.3"
 requests = "^2.25.1"
 
 [tool.poetry.scripts]
-ggs = "gg_scrape.main:app"
+ggs = "gg_scrape.main:ggs"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
