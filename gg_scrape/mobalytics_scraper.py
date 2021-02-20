@@ -25,7 +25,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         not_allowed.append(p)
 
     if role in not_allowed:
-        print(f"Mobalytics doens't have a build for {role}. \nHere's the default build instead.")
+        print(f"Mobalytics dosen't have a build for {role}. \nHere's the default build instead.")
         role = ""
         soup = get_soup(champion, role)
 
