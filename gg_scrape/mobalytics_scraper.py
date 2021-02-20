@@ -39,7 +39,7 @@ def mobalytics_scraper(champion: str, role: str, *args) -> Node:
         Node(shard, parent=shards)
     # create tree entries
     build = Node("Build", parent=root)
-    skill = Node("Skill Priority", parent=root)
+    skill = Node("Skill Learn Order", parent=root)
     starter = Node("Starter Items", parent=build)
     early = Node("Early Items", parent=build)
     core = Node("Core Items", parent=build)
