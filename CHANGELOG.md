@@ -6,7 +6,9 @@
 ### Added
  - enabled verbose mode for mobalytics
  - get time targets for starter/early/core items from mobalytics if verbose
+ - detect if mobalytics doesn't have a build for the passed role, and return default role instead
 ### Changed / Fixed
+ - collapsed the 'shards' node into the 'runes' node
  - get skill priority instead of order from mobalytics
 ### Removed
  - 'vanilla' scraper
