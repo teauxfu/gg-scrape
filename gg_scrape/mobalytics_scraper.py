@@ -21,8 +21,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     matches = soup.find_all("div", class_="css-jboygh e3vq2as0")
     not_allowed = []
     for entry in matches:
-        p = entry.find("img")["alt"].lower()
-        not_allowed.append(p)
+        not_allowed.append(entry.find("img")["alt"].lower())
 
     if role in not_allowed:
         print(f"Mobalytics doesn't have a build for {role}. \nHere's the default build instead.")
