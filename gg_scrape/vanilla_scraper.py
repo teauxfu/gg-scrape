@@ -58,9 +58,6 @@ def vanilla_scraper(champion: str, role:str, matchup:str, verbose: bool, *args):
         s = entry.text
         Node(s, parent=skills)
 
-    # print the thing
-    for pre, _, node in RenderTree(root):
-        print(f"{pre}{node.name}")
 
-    print(f"\nFinished in {round(time.time() - start, 3)} s     ✨ glhf ✨")
-    input()
+    return(root)
+ 
