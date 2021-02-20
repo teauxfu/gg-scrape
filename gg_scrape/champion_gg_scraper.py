@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool, *args) -> Node:
+def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
     """Scrapes a build from champion.gg."""
 
     if role.startswith("m"):
