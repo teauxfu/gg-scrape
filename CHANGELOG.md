@@ -2,6 +2,12 @@
 
 [Unreleased]
 
+## v0.1.7
+fix typo
+
+## v0.1.6
+fix typo
+
 ## v0.1.5
 ### Added
  - enabled verbose mode for mobalytics
