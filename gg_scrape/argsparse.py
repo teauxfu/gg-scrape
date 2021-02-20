@@ -12,7 +12,7 @@ ggs = typer.Typer()
 @ggs.command()
 def main(
     champion: str = typer.Argument(..., help="The champion you're playing"),
-    role: str = typer.Option("", "--role", "-r", help="The role you're playing", show_default=False),
+    role: str = typer.Argument("", help="The role you're playing", show_default=False),
     matchup: str = typer.Option("", "--matchup", "-m", help="Your opposing matchup", show_default=False),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Show more verbose output"),
     scraper: str = typer.Option("mobalytics.gg", "--scraper", "-s", help="Which site to scrape")
