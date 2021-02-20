@@ -19,9 +19,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     # when this happens, just redirect to the most popular allowed role ?
     # check if valid
     matches = soup.find_all("div", class_="css-jboygh e3vq2as0")
-    not_allowed = []
-    for entry in matches:
-        not_allowed.append(entry.find("img")["alt"].lower())
+    not_allowed = [entry.find("img")["alt"].lower() for entry in matches]
 
     if role in not_allowed:
         print(f"Mobalytics doesn't have a build for {role}. \nHere's the default build instead.")
