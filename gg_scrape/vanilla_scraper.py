@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import requests
 
 def vanilla_scraper(champion: str, role:str, matchup:str, verbose: bool, *args):
-    start = time.time() # for funsies
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
     # make soup from the URL 
     page = requests.get(url)
