@@ -1,8 +1,11 @@
+import time
+
 import typer
 
 from .champion_gg_scraper import champion_gg_scraper
 from .mobalytics_scraper import mobalytics_scraper
 # from .vanilla_scraper import vanilla_scraper
+from .print_tree import print_tree
 
 ggs = typer.Typer()
 
