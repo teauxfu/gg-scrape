@@ -42,6 +42,7 @@ def mobalytics_scraper(champion: str, role: str, verbose: bool, *args) -> Node:
 
     # create tree entries
     build = Node("Build", parent=root)
+    
     skill = Node("Skill Priority", parent=root)
     starter = Node("Starter Items", parent=build)
     early = Node("Early Items", parent=build)
@@ -78,12 +79,13 @@ def mobalytics_scraper(champion: str, role: str, verbose: bool, *args) -> Node:
 
     # Skill Max Order
     sequence = []
+    # this makes a list of the skill taken at each level
     for entry in soup.find_all("div", class_="css-1dai7ia eaoplg14"):
-        sequence.append(entry.text) # this makes a list of the skill taken at each level
+        sequence.append(entry.text) 
+    # this dict has Q W E keys and values of the level when they get maxed
     max_order = {}
-    for ability in set(sequence):
-        if ability != "R":
-            max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][3] # find the 4th occurrance of each
+    for ability in ["Q", "W", "E"]:
+        max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][3] # find the 4th occurrance of each
     # iterate over values and copy keys in order of value magnitude
     prio = []
     for i in range (19):
