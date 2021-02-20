@@ -32,8 +32,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     r = soup.find("div", class_="css-p3pzap eo6ba8g5").text
 
     # create tree entries for default output
-    title = f"{c} {r} from Mobalytics"
-    root = Node(title)
+    root = Node(f"{c} {r} from Mobalytics")
 
     # get the runes
     runes = Node("Runes", parent=root)
