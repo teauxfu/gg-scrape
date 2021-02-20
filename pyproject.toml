@@ -2,7 +2,7 @@
 name = "gg-scrape"
 description = "A little Python CLI app that provides a summary of League champion build information. "
 authors = ["Alex W <alex@southsun.tech>"]
-version = "0.1.5"
+version = "0.1.6"
 readme = "README.md"
 repository = "https://github.com/teauxfu/gg-scrape"
 
