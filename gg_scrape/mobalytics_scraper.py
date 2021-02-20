@@ -35,9 +35,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     # get the runes
     runes = Node("Runes", parent=root)
     matches = soup.find_all("img", class_="css-1la33yl e16p94fx0")
-    for entry in matches:
-        r = entry["alt"]
-        Node(r, parent=runes)
+    [Node(entry["alt"], parent=runes) for entry in matches]
 
     # get the shards
     matches = soup.find_all("img", class_="css-1vgqbrs ed9gm2s1")
