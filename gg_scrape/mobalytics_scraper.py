@@ -115,9 +115,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     # Skill Max Order
     skill = Node("Skill Priority", parent=root)
     # this makes a list of the skill taken at each level
-    sequence = []
-    for entry in soup.find_all("div", class_="css-1dai7ia eaoplg14"):
-        sequence.append(entry.text) 
+    sequence = [entry.text for entry in soup.find_all("div", class_="css-1dai7ia eaoplg14")]
     # this dict has Q W E keys and values of the level when they get maxed
     max_order = {}
     for ability in ["Q", "W", "E"]:
