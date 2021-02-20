@@ -1,23 +1,6 @@
 [tool.poetry]
 name = "gg-scrape"
-version = "0.1.3"
-description = "A little Python CLI app that provides a League champion runes/build from mobalytics.gg and the recommended skill order from champion.gg"
-authors = ["Alex Whittington <alexmw777@gmail.com>"]
-readme = "README.md"
-repository = "https://github.com/teauxfu/gg-scrape"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-typer = {version = "^0.3.2"}
-anytree = "^2.8.0"
-beautifulsoup4 = "^4.9.3"
-requests = "^2.25.1"
-
-[tool.poetry.scripts]
-ggs = "gg_scrape.main:ggs"
-
-[tool.poetry.dev-dependencies]
-pytest = "^5.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
