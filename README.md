@@ -11,7 +11,7 @@ python -m pip install gg-scrape
 
 ## Usage
 ```
-ggs CHAMPION [ROLE]
+ggs [OPTIONS] CHAMPION [ROLE] [MATCHUP] [SCRAPER]
 ```
 
 ![screenshot of the app in use](img/Capture.PNG)
@@ -22,4 +22,4 @@ Depends on the anytree, beautifulsoup4, typer, and requests Python libraries.
 ## Contributions
 Thanks to [@Mycsina](https://github.com/Mycsina) for feedback and helping to improve and expand this package's functionality!
 
-Pull requests are welcome. 
+Pull requests are welcome! 
