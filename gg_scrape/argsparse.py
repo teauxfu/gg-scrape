@@ -19,6 +19,7 @@ def main(
     verbose: str = typer.Option(False, help="Show more verbose output"),
 ):
     args = champion, role, matchup, verbose
+    start = time.time() # for funsies
 
     if role.startswith("m"):
         role = "mid"
@@ -32,8 +33,11 @@ def main(
         role = "support"
 
 #    if scraper.startswith("v"):
-#        vanilla_scraper(*args)
+#        print_tree(vanilla_scraper(*args))
     if scraper.startswith("m"):
-        mobalytics_scraper(*args)
+        print_tree(mobalytics_scraper(*args))
     elif scraper.startswith("c"):
-        champion_gg_scraper(*args)
+        print_tree(champion_gg_scraper(*args))
+
+    print(f"\nFinished in {round(time.time() - start, 3)} s     ✨ glhf ✨")
+    input()
