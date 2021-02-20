@@ -31,6 +31,6 @@ def main(
 #    if scraper.startswith("v"):
 #        vanilla_scraper(*args)
     if scraper.startswith("m"):
-        mobalytics_gg_scraper(*args)
+        mobalytics_scraper(*args)
     elif scraper.startswith("c"):
         champion_gg_scraper(*args)
