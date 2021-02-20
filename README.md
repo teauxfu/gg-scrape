@@ -14,7 +14,10 @@ python -m pip install gg-scrape
 ggs [OPTIONS] CHAMPION [ROLE]
 ```
 
+
+
 ## Screenshots
+![help text](img/help.PNG)
 ![screenshot of the app in use](img/demo.PNG)
 ![unavailable build handling](img/default_build.PNG)
 ![verbose output](img/verbose_output.PNG)
