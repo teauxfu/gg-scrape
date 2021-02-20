@@ -15,7 +15,7 @@ def main(
     champion: str = typer.Argument(..., help="The champion you're playing"),
     role: str = typer.Argument("", help="The role you're playing", show_default=False),
     matchup: str = typer.Argument("", help="Your opposing matchup", show_default=False),
-    scraper: str = typer.Argument("m", help="Which site to scrape"),
+    scraper: str = typer.Argument("m", help="Which site to scrape", show_default=False),
     verbose: str = typer.Option(False, help="Show more verbose output"),
 ):
     args = champion, role, matchup, verbose
