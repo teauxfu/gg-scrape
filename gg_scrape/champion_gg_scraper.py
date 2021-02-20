@@ -8,6 +8,8 @@ import requests
 
 
 def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool, *args) -> Node:
+    """Scrapes a build from champion.gg."""
+
     if role.startswith("m"):
         role = "Middle"
     if matchup != "":

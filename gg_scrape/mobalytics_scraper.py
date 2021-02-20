@@ -7,7 +7,9 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def mobalytics_scraper(champion: str, role: str, *args) -> Node:
+def mobalytics_scraper(champion: str, role: str, verbose: bool, *args) -> Node:
+    """Scrapes a build from Mobalytics.gg."""
+
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
     # make soup from the URL
     page = requests.get(url)
