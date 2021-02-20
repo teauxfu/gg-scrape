@@ -39,14 +39,16 @@ def mobalytics_scraper(champion: str, role: str, verbose: bool, *args) -> Node:
         shard_id = entry["src"].split(".png")[0][-4:]  # was blah/####.png
         shard = conversion.get(shard_id)
         Node(shard, parent=shards)
+
     # create tree entries
     build = Node("Build", parent=root)
-    skill = Node("Skill Learn Order", parent=root)
+    skill = Node("Skill Priority", parent=root)
     starter = Node("Starter Items", parent=build)
     early = Node("Early Items", parent=build)
     core = Node("Core Items", parent=build)
     full = Node("Full Build", parent=build)
     situational = Node("Situational Items", parent=build)
+
     # add all relevant entries
     for cycle, entry in enumerate(soup.find_all("div", class_="ednsys62 css-1taoj5l ehobrmq2")):
         # Starter items
@@ -68,9 +70,27 @@ def mobalytics_scraper(champion: str, role: str, verbose: bool, *args) -> Node:
     # Situational items
     for entry in soup.find_all("div", class_="css-143dzw8 es5thxd2"):
         Node(re.findall(r"alt=\"(.*)\" c", str(entry.contents[0]))[0], situational)
-    # Skill Order
-    for entry in soup.find_all("div", class_="css-70qvj9 ek7zqkr0")[0].contents:
-        if entry.name == "p":
-            Node(entry.text, skill)
+    
+    # Skill Learn Order
+    # for entry in soup.find_all("div", class_="css-70qvj9 ek7zqkr0")[0].contents:
+    #     if entry.name == "p":
+    #         Node(entry.text, skill)
+
+    # Skill Max Order
+    sequence = []
+    for entry in soup.find_all("div", class_="css-1dai7ia eaoplg14"):
+        sequence.append(entry.text) # this makes a list of the skill taken at each level
+    max_order = {}
+    for ability in set(sequence):
+        if ability != "R":
+            max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][3] # find the 4th occurrance of each
+    # iterate over values and copy keys in order of value magnitude
+    prio = []
+    for i in range (19):
+        if i in max_order.values():
+            prio.append((list(max_order.keys())[list(max_order.values()).index(i)]))
+    for item in prio:
+        Node(item, skill)
+           
     # return tree
     return root
