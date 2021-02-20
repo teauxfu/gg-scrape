@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
+def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool, *args) -> Node:
     if role.startswith("m"):
         role = "Middle"
     if matchup != "":
