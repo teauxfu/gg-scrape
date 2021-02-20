@@ -69,10 +69,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
 
     # get time targets
     if verbose:
-        time_targets = []
-        matches = soup.find_all("p", class_="css-1ofmdln ehobrmq7")
-        for entry in matches:
-            time_targets.append(entry.text)
+        time_targets = [entry.text for entry in soup.find_all("p", class_="css-1ofmdln ehobrmq7")]
 
     # add all relevant entries
     for cycle, entry in enumerate(soup.find_all("div", class_="ednsys62 css-1taoj5l ehobrmq2")):
