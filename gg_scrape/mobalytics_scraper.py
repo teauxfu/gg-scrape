@@ -6,14 +6,29 @@ from bs4 import BeautifulSoup
 
 import requests
 
+def get_soup(champion: str, role: str):
+    url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
+    page = requests.get(url)
+    return BeautifulSoup(page.content, "html.parser")
 
 def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
     """Scrapes a build from Mobalytics.gg."""
+   
+    soup = get_soup(champion, role)
+    # mobalytics won't show build info for certain roles
+    # when this happens, just redirect to the most popular allowed role ?
+    # check if valid
+    matches = soup.find_all("div", class_="css-jboygh e3vq2as0")
+    not_allowed = []
+    for entry in matches:
+        p = entry.find("img")["alt"].lower()
+        not_allowed.append(p)
 
-    url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
-    # make soup from the URL
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, "html.parser")
+    if role in not_allowed:
+        print(f"Mobalytics doens't have a build for {role}. \nHere's the default build instead.")
+        role = ""
+        soup = get_soup(champion, role)
+
     c = soup.find("p", class_="css-1yvcufn eo6ba8g4").text
     r = soup.find("div", class_="css-p3pzap eo6ba8g5").text
 
@@ -58,7 +73,6 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         matches = soup.find_all("p", class_="css-1ofmdln ehobrmq7")
         for entry in matches:
             time_targets.append(entry.text)
-        print(time_targets)
 
     # add all relevant entries
     for cycle, entry in enumerate(soup.find_all("div", class_="ednsys62 css-1taoj5l ehobrmq2")):
@@ -81,7 +95,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         if cycle == 3:
             if verbose:
                 full = Node(f"Final Items", parent=build)
-                for content in entry.contents:
+                for content in entry.contents[-3:]: # only want the last 3
                     Node(re.findall(r"alt=\"(.*)\" c", str(content))[0], full)
             else:
                 for content in entry.contents:
@@ -93,7 +107,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         for entry in soup.find_all("div", class_="css-143dzw8 es5thxd2"):
             Node(re.findall(r"alt=\"(.*)\" c", str(entry.contents[0]))[0], situational)
 
-        # Skill Learn Order
+    # Skill Learn Order
     # for entry in soup.find_all("div", class_="css-70qvj9 ek7zqkr0")[0].contents:
     #     if entry.name == "p":
     #         Node(entry.text, skill)
@@ -107,7 +121,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     # this dict has Q W E keys and values of the level when they get maxed
     max_order = {}
     for ability in ["Q", "W", "E"]:
-        max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][3] # find the 4th occurrance of each
+        max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][-1] # find the last of each
     # iterate over values and copy keys in order of value magnitude
     prio = []
     for i in range (19):
