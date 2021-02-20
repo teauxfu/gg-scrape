@@ -38,15 +38,16 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         "5007": "Ability Haste",
         "5008": "Adaptive Force",
     }
-    if verbose:
-        shards = Node("Shards", parent=root)
+    # if verbose:
+    #     shards = Node("Shards", parent=root)
     for entry in matches:
         shard_id = entry["src"].split(".png")[0][-4:]  # was blah/####.png
         shard = conversion.get(shard_id)
-        if verbose:
-            Node(shard, parent=shards)
-        else:
-            Node(shard, parent=runes)
+        # if verbose:
+        #     Node(shard, parent=shards)
+        # else:
+        #     Node(shard, parent=runes)
+        Node(shard, parent=runes)
     
     # get the build
     build = Node("Build", parent=root)
