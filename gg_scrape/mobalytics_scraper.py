@@ -96,6 +96,14 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         for entry in soup.find_all("div", class_="css-143dzw8 es5thxd2"):
             Node(re.findall(r"alt=\"(.*)\" c", str(entry.contents[0]))[0], situational)
 
+    summoners = Node("Summoner Spells", parent=root)
+    matches = soup.find_all("img", class_="css-1xsdwvo edxc7l62")
+    for entry in matches:
+        s = entry["src"].split(".png")[0].split("Summoner")[1] # was blah/SummonerFoo.png
+        if s == "Dot":
+            s = "Ignite"
+        Node(s, parent=summoners)
+
     # Skill Learn Order
     # for entry in soup.find_all("div", class_="css-70qvj9 ek7zqkr0")[0].contents:
     #     if entry.name == "p":
