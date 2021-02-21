@@ -104,6 +104,8 @@ def champion_gg_runes(tag):
             return tag
 
 def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
+    """Return a BeautifulSoup of Champion.gg HTML for the passed args."""
+    
     if matchup != "":
         url = f"https://champion.gg/champion/{champion}/{role}/overview/{matchup}"
     else:
