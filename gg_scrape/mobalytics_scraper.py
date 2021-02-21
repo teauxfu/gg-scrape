@@ -6,10 +6,8 @@ from bs4 import BeautifulSoup
 
 import requests
 
-def get_soup(champion: str, role: str):
-    url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
-    page = requests.get(url)
-    return BeautifulSoup(page.content, "html.parser")
+
+
 
 def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
     """Scrapes a build from Mobalytics.gg."""
@@ -121,3 +119,8 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         
     # return tree
     return root
+
+def get_soup(champion: str, role: str) -> BeautifulSoup:
+    url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
+    page = requests.get(url)
+    return BeautifulSoup(page.content, "html.parser")
