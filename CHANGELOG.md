@@ -7,7 +7,6 @@
  - summoner spells from mobalytics
 ### Changed
  - champion.gg output format
- 
 
 ## v0.1.7
 fix typo
