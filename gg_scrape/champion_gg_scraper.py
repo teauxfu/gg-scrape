@@ -95,7 +95,6 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
 
     return root
 
-
 def champion_gg_runes(tag):
     """Filter function that returns true for tags with the names of Runes in Champion.gg"""
     if "class" in tag.attrs:
