@@ -127,7 +127,8 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     return root
 
 def get_soup(champion: str, role: str) -> BeautifulSoup:
-    """Return a BeautifulSoup of Mobalytics HTML.""" 
+    """Return a BeautifulSoup of Mobalytics HTML for the passed args.""" 
+    
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
     page = requests.get(url)
     return BeautifulSoup(page.content, "html.parser")
