@@ -81,3 +81,11 @@ def champion_gg_runes(tag):
             "class"
         ] and not re.compile("sc-").search(tag.attrs["class"][1]):
             return tag
+
+def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
+    if matchup != "":
+        url = f"https://champion.gg/champion/{champion}/{role}/overview/{matchup}"
+    else:
+        url = f"https://champion.gg/champion/{champion}/{role}/"
+    page = requests.get(url)
+    return BeautifulSoup(page.content, "html.parser")
