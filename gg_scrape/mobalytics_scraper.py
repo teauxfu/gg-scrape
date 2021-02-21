@@ -7,10 +7,8 @@ from bs4 import BeautifulSoup
 import requests
 
 
-
-
 def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
-    """Scrapes a build from Mobalytics.gg."""
+    """Scrapes a build from Mobalytics.gg and returns a tree."""
    
     soup = get_soup(champion, role)
     # mobalytics won't show build info for certain roles
@@ -129,6 +127,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     return root
 
 def get_soup(champion: str, role: str) -> BeautifulSoup:
+    """Return a BeautifulSoup of Mobalytics HTML.""" 
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
     page = requests.get(url)
     return BeautifulSoup(page.content, "html.parser")
