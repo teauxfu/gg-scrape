@@ -52,7 +52,6 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
             Node(shard, parent=shards)
         else:
             Node(shard, parent=runes)
-        Node(shard, parent=runes)
     
     # get the build
     build = Node("Build", parent=root)
