@@ -15,7 +15,7 @@ def main(
     role: str = typer.Argument("", help="The role you're playing", show_default=False),
     matchup: str = typer.Option("", "--matchup", "-m", help="Your opposing matchup", show_default=False),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Show more verbose output"),
-    scraper: str = typer.Option("mobalytics.gg", "--scraper", "-s", help="Which site to scrape")
+    scraper: str = typer.Option("champion.gg", "--scraper", "-s", help="Which site to scrape")
 ):  
 
     args = champion, role, matchup, verbose
