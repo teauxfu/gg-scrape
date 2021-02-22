@@ -1,6 +1,10 @@
 # Changelog
 
 [Unreleased]
+### Changed
+ - switched the default scraper to champion.gg
+### Fixed
+ - a bug causing duplicate runes output for mobalytics
 
 ## v0.1.8
 ### Added 
