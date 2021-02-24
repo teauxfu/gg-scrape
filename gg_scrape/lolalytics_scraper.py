@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from pyppeteer import launch
 
 import requests
+from requests.exceptions import ConnectionError
 
 # from selenium import webdriver
 # from selenium.common.exceptions import TimeoutException
@@ -41,10 +42,21 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         "14": "Ignite",
         "21": "Barrier",
     }
-    item_dict: dict = requests.get("http://ddragon.leagueoflegends.com/cdn/11.4.1/data/en_US/item.json").json()
-    runes_list: list = requests.get(
-        "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json"
-    ).json()
+
+    try:
+        item_dict: dict = requests.get("http://ddragon.leagueoflegends.com/cdn/11.4.1/data/en_US/item.json").json()
+    except ConnectionError:
+        print("Unable to talk to ddragon right now, please try again later.")
+        return root
+    
+    try:
+        runes_list: list = requests.get(
+            "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json"
+        ).json()
+    except ConnectionError:
+        print("Unable to talk to ddragon right now, please try again later.")
+        return root
+
     runes_dict: dict = {runes_list[runes_list.index(entry)]["id"]: entry for entry in runes_list}
     # Get all relevant elements from the page and make tree entries
     spells = soup.find_all("div", class_="Image_spell32br__Rns3F")
@@ -105,11 +117,4 @@ async def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
 def lolalytics_runes(tag):
     if "data-type" in tag.attrs:
         if "rune" in tag.attrs["data-type"]:
-            if "class" not in tag.attrs:
-                return True
-            else:
-                return False
-        else:
-            return False
-    else:
-        return False
+            return "class" in tag.attrs
