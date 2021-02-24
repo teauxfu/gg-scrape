@@ -13,6 +13,7 @@ anytree = "^2.8.0"
 beautifulsoup4 = "^4.9.3"
 requests = "^2.25.1"
 typer = "^0.3.2"
+pyppeteer = "^0.2.5"
 
 
 [tool.poetry.scripts]
