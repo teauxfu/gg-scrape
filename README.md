@@ -1,4 +1,6 @@
 # gg-scrape
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 A little Python CLI app that provides a League of Legends champion build by scraping the web.
 
 The goal was to not have to open a browser tab (or be advertised to) to quickly check a build before a match.

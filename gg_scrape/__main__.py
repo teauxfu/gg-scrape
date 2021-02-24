@@ -2,4 +2,5 @@
 # https://typer.tiangolo.com/tutorial/package/#support-python-m-optional
 
 from gg_scrape.argsparse import ggs
-ggs(prog_name='ggs')
+
+ggs(prog_name="ggs")

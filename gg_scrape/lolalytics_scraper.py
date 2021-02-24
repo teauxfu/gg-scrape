@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from pyppeteer import launch
 
 import requests
+from requests.exceptions import ConnectionError
 
 # from selenium import webdriver
 # from selenium.common.exceptions import TimeoutException
@@ -42,12 +43,23 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         "14": "Ignite",
         "21": "Barrier",
     }
-    latest_ver: str = requests.get("https://ddragon.leagueoflegends.com/api/versions.json").json()[0]  # first entry is latest version
-    item_dict: dict = requests.get(f"http://ddragon.leagueoflegends.com/cdn/{latest_ver}/data/en_US/item.json").json()
-    runes_list: list = requests.get(
-        "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json"
-    ).json()
-    runes_dict: dict = {runes_list[runes_list.index(entry)]["id"]: entry for entry in runes_list}  # turn runes_list into a dict with the key being the entry's id parameter
+
+    try:
+        # todo find a way to fetch most recent patch in url
+        item_dict: dict = requests.get("http://ddragon.leagueoflegends.com/cdn/11.4.1/data/en_US/item.json").json()
+    except ConnectionError:
+        print("Unable to talk to ddragon right now, please try again later.")
+        return root
+
+    try:
+        runes_list: list = requests.get(
+            "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json"
+        ).json()
+    except ConnectionError:
+        print("Unable to talk to ddragon right now, please try again later.")
+        return root
+
+    runes_dict: dict = {runes_list[runes_list.index(entry)]["id"]: entry for entry in runes_list}
     # Get all relevant elements from the page and make tree entries
     spells = soup.find_all("div", class_="Image_spell32br__Rns3F")
     # Replace tags with names
@@ -109,11 +121,4 @@ def lolalytics_runes(tag):
     """Function to get all tags with active runes from lolalytics.com"""
     if "data-type" in tag.attrs:
         if "rune" in tag.attrs["data-type"]:
-            if "class" not in tag.attrs:
-                return True
-            else:
-                return False
-        else:
-            return False
-    else:
-        return False
+            return "class" in tag.attrs

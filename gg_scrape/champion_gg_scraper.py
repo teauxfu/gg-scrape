@@ -70,11 +70,9 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
 
     # get skills
     skills = Node("Skill Priority", parent=root)
-    results = soup.find_all(
-        "p", class_="typography__Caption-sc-1mpsx83-11 typography__CaptionBold-sc-1mpsx83-12 dwtPBh"
-    )[
-        1:4
-    ]  # the first is 'Passive' and the rest are redundant
+    sel = "typography__Caption-sc-1mpsx83-11 typography__CaptionBold-sc-1mpsx83-12 dwtPBh"
+    # the first is 'Passive' and the rest are redundant
+    results = soup.find_all("p", class_=sel)[1:4]
     for entry in results:
         s = entry.text
         Node(s, parent=skills)
@@ -96,9 +94,8 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
 def champion_gg_runes(tag):
     """Filter function that returns true for tags with the names of Runes in Champion.gg"""
     if "class" in tag.attrs:
-        if "ChampionRuneSmallCHGG__RuneName-sc-1vubct9-5" in tag.attrs["class"] and not re.compile("sc-").search(
-            tag.attrs["class"][1]
-        ):
+        c = "ChampionRuneSmallCHGG__RuneName-sc-1vubct9-5"
+        if c in tag.attrs["class"] and not re.compile("sc-").search(tag.attrs["class"][1]):
             return tag
 
 

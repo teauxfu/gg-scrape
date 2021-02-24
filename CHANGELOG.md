@@ -1,6 +1,8 @@
 # Changelog
 
 [Unreleased]
+### Added
+- lolalytics scraper [PR#2](https://github.com/teauxfu/gg-scrape/pull/2)
 ### Changed
  - switched the default scraper to champion.gg
 ### Fixed
