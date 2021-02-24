@@ -18,6 +18,7 @@ import requests
 
 
 def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
+    """Parses through lolalytics.com and returns a full build according to given parameters"""
     if role.startswith("m"):
         role = "Middle"
     # Get the webpage HTML
@@ -41,11 +42,12 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         "14": "Ignite",
         "21": "Barrier",
     }
-    item_dict: dict = requests.get("http://ddragon.leagueoflegends.com/cdn/11.4.1/data/en_US/item.json").json()
+    latest_ver: str = requests.get("https://ddragon.leagueoflegends.com/api/versions.json").json()[0]  # first entry is latest version
+    item_dict: dict = requests.get(f"http://ddragon.leagueoflegends.com/cdn/{latest_ver}/data/en_US/item.json").json()
     runes_list: list = requests.get(
         "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json"
     ).json()
-    runes_dict: dict = {runes_list[runes_list.index(entry)]["id"]: entry for entry in runes_list}
+    runes_dict: dict = {runes_list[runes_list.index(entry)]["id"]: entry for entry in runes_list}  # turn runes_list into a dict with the key being the entry's id parameter
     # Get all relevant elements from the page and make tree entries
     spells = soup.find_all("div", class_="Image_spell32br__Rns3F")
     # Replace tags with names
@@ -67,6 +69,7 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     for skill in skill_order:
         Node(skill.attrs["alt"], tree_skill_order)
     for rune in runes:
+        # There's a rune id with the f letter so to make sure this doesn't raise a KeyError I have to strip the letter
         Node(runes_dict[int(rune.attrs["data-id"].strip("f"))]["name"], tree_runes)
     return root
 
@@ -103,6 +106,7 @@ async def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
 
 
 def lolalytics_runes(tag):
+    """Function to get all tags with active runes from lolalytics.com"""
     if "data-type" in tag.attrs:
         if "rune" in tag.attrs["data-type"]:
             if "class" not in tag.attrs:
