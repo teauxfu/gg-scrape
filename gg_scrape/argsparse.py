@@ -4,6 +4,7 @@ import typer
 
 from .champion_gg_scraper import champion_gg_scraper
 from .mobalytics_scraper import mobalytics_scraper
+from .lolalytics_scraper import lolalytics_scraper
 from .print_tree import print_tree
 
 ggs = typer.Typer()
@@ -15,11 +16,11 @@ def main(
     role: str = typer.Argument("", help="The role you're playing", show_default=False),
     matchup: str = typer.Option("", "--matchup", "-m", help="Your opposing matchup", show_default=False),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Show more verbose output"),
-    scraper: str = typer.Option("champion.gg", "--scraper", "-s", help="Which site to scrape")
-):  
+    scraper: str = typer.Option("champion.gg", "--scraper", "-s", help="Which site to scrape"),
+):
 
     args = champion, role, matchup, verbose
-    start = time.time() # for funsies
+    start = time.time()  # for funsies
 
     if role.startswith("m"):
         role = "mid"
@@ -36,6 +37,8 @@ def main(
         print_tree(mobalytics_scraper(*args))
     elif scraper.startswith("c"):
         print_tree(champion_gg_scraper(*args))
+    elif scraper.startswith("lola"):
+        print_tree(lolalytics_scraper(*args))
 
     print(f"\nFinished in {round(time.time() - start, 3)} s     ✨ glhf ✨")
     input()

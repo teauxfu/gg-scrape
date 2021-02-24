@@ -9,7 +9,6 @@ import requests
 
 def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
     """Scrapes a build from Mobalytics.gg and returns a tree."""
-   
     soup = get_soup(champion, role)
     # mobalytics won't show build info for certain roles
     # when this happens, just redirect to the most popular allowed role ?
@@ -52,7 +51,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
             Node(shard, parent=shards)
         else:
             Node(shard, parent=runes)
-    
+
     # get the build
     build = Node("Build", parent=root)
 
@@ -80,13 +79,13 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         # Full Build
         if cycle == 3:
             if verbose:
-                full = Node(f"Final Items", parent=build)
-                for content in entry.contents[-3:]: # only want the last 3
+                full = Node("Final Items", parent=build)
+                for content in entry.contents[-3:]:  # only want the last 3
                     Node(re.findall(r"alt=\"(.*)\" c", str(content))[0], full)
             else:
                 for content in entry.contents:
                     Node(re.findall(r"alt=\"(.*)\" c", str(content))[0], build)
-    
+
     # Situational items
     if verbose:
         situational = Node("Situational Items", parent=build)
@@ -96,7 +95,7 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     summoners = Node("Summoner Spells", parent=root)
     matches = soup.find_all("img", class_="css-1xsdwvo edxc7l62")
     for entry in matches:
-        s = entry["src"].split(".png")[0].split("Summoner")[1] # was blah/SummonerFoo.png
+        s = entry["src"].split(".png")[0].split("Summoner")[1]  # was blah/SummonerFoo.png
         if s == "Dot":
             s = "Ignite"
         Node(s, parent=summoners)
@@ -113,21 +112,21 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     # this dict has Q W E keys and values of the level when they get maxed
     max_order = {}
     for ability in ["Q", "W", "E"]:
-        max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][-1] # find the last of each
+        max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][-1]  # find the last of each
     # iterate over values and copy keys in order of value magnitude
     prio = []
-    for i in range (19):
+    for i in range(19):
         if i in max_order.values():
             prio.append((list(max_order.keys())[list(max_order.values()).index(i)]))
     for item in prio:
         Node(item, skill)
-        
+
     # return tree
     return root
 
+
 def get_soup(champion: str, role: str) -> BeautifulSoup:
-    """Returns a BeautifulSoup of Mobalytics HTML for the passed args.""" 
-    
+    """Returns a BeautifulSoup of Mobalytics HTML for the passed args."""
     url = f"https://app.mobalytics.gg/lol/champions/{champion}/build?role={role}"
     page = requests.get(url)
     return BeautifulSoup(page.content, "html.parser")

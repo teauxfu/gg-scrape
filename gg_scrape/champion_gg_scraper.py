@@ -9,7 +9,6 @@ import requests
 
 def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
     """Scrapes a build from champion.gg."""
-
     if role.startswith("m"):
         role = "Middle"
 
@@ -20,9 +19,9 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
         title = f"{champion.title()} {role.title()} vs {matchup.title()} from Champion.gg"
     else:
         title = f"{champion.title()} {role.title()} from Champion.gg"
-    
+
     root = Node(title)
-       
+
     # Parse the webpage
     # Divide webpage into relevant pieces
     if matchup != "":
@@ -33,7 +32,7 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
         relevant_tags = soup.find_all(class_="Inner-sc-7vmxjm-0 cpZSJT")
         items = relevant_tags[1].contents[0].contents[0]
         runes_webpage = relevant_tags[1].contents[0].contents[1]
-    
+
     # Runes and shards
     tree_runes = Node("Runes", root)
     if verbose:
@@ -47,7 +46,7 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
         else:
             Node(entry.contents[0], tree_runes)
 
-    # get the build 
+    # get the build
     build = Node("Build", root)
     if verbose:
         starters = Node("Starter Items", build)
@@ -71,20 +70,18 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
 
     # get skills
     skills = Node("Skill Priority", parent=root)
-    results = soup.find_all('p', class_='typography__Caption-sc-1mpsx83-11 typography__CaptionBold-sc-1mpsx83-12 dwtPBh')[1:4] # the first is 'Passive' and the rest are redundant
+    results = soup.find_all(
+        "p", class_="typography__Caption-sc-1mpsx83-11 typography__CaptionBold-sc-1mpsx83-12 dwtPBh"
+    )[
+        1:4
+    ]  # the first is 'Passive' and the rest are redundant
     for entry in results:
         s = entry.text
         Node(s, parent=skills)
 
     # Summoner Spells
     summoners = Node("Summoner Spells", parent=root)
-    spells = list(
-        set(
-            re.findall(
-                r"Summoner(.*).png", str(items.find_all(class_="sc-fONwsr bsxfkk"))
-            )
-        )
-    )
+    spells = list(set(re.findall(r"Summoner(.*).png", str(items.find_all(class_="sc-fONwsr bsxfkk")))))
     for cycle, entry in enumerate(spells):
         # Ignite is referred to as Dot
         if entry == "Dot":
@@ -95,17 +92,18 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
 
     return root
 
+
 def champion_gg_runes(tag):
     """Filter function that returns true for tags with the names of Runes in Champion.gg"""
     if "class" in tag.attrs:
-        if "ChampionRuneSmallCHGG__RuneName-sc-1vubct9-5" in tag.attrs[
-            "class"
-        ] and not re.compile("sc-").search(tag.attrs["class"][1]):
+        if "ChampionRuneSmallCHGG__RuneName-sc-1vubct9-5" in tag.attrs["class"] and not re.compile("sc-").search(
+            tag.attrs["class"][1]
+        ):
             return tag
+
 
 def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
     """Returns a BeautifulSoup of Champion.gg HTML for the passed args."""
-    
     if matchup != "":
         url = f"https://champion.gg/champion/{champion}/{role}/overview/{matchup}"
     else:
