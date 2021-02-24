@@ -45,8 +45,9 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     }
 
     try:
-        # todo find a way to fetch most recent patch in url
-        item_dict: dict = requests.get("http://ddragon.leagueoflegends.com/cdn/11.4.1/data/en_US/item.json").json()
+        # todo find a way to fetch most recent patch in url´
+        latest_version: str = requests.get("https://ddragon.leagueoflegends.com/api/versions.json").json()
+        item_dict: dict = requests.get(f"http://ddragon.leagueoflegends.com/cdn/{latest_version}/data/en_US/item.json").json()
     except ConnectionError:
         print("Unable to talk to ddragon right now, please try again later.")
         return root
