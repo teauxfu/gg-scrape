@@ -19,6 +19,7 @@ from requests.exceptions import ConnectionError
 
 
 def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
+    """Parses through lolalytics.com and returns a full build according to given parameters"""
     if role.startswith("m"):
         role = "Middle"
     # Get the webpage HTML
@@ -44,8 +45,9 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     }
 
     try:
-        # todo find a way to fetch most recent patch in url
-        item_dict: dict = requests.get("http://ddragon.leagueoflegends.com/cdn/11.4.1/data/en_US/item.json").json()
+        # todo find a way to fetch most recent patch in url´
+        latest_version: str = requests.get("https://ddragon.leagueoflegends.com/api/versions.json").json()
+        item_dict: dict = requests.get(f"http://ddragon.leagueoflegends.com/cdn/{latest_version}/data/en_US/item.json").json()
     except ConnectionError:
         print("Unable to talk to ddragon right now, please try again later.")
         return root
@@ -80,6 +82,7 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     for skill in skill_order:
         Node(skill.attrs["alt"], tree_skill_order)
     for rune in runes:
+        # There's a rune id with the f letter so to make sure this doesn't raise a KeyError I have to strip the letter
         Node(runes_dict[int(rune.attrs["data-id"].strip("f"))]["name"], tree_runes)
     return root
 
@@ -116,6 +119,7 @@ async def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
 
 
 def lolalytics_runes(tag):
+    """Function to get all tags with active runes from lolalytics.com"""
     if "data-type" in tag.attrs:
         if "rune" in tag.attrs["data-type"]:
             return "class" in tag.attrs
