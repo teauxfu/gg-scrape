@@ -1,13 +1,12 @@
+"""Parses through lolalytics.com and returns a full build according to given parameters"""
+
 import asyncio
 from collections import OrderedDict
 
-from anytree import Node
-
-from bs4 import BeautifulSoup
-
-from pyppeteer import launch
-
 import requests
+from anytree import Node
+from bs4 import BeautifulSoup
+from pyppeteer import launch
 from requests.exceptions import ConnectionError
 
 # from selenium import webdriver
@@ -45,9 +44,10 @@ def lolalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     }
 
     try:
-        # todo find a way to fetch most recent patch in url´
         latest_version: str = requests.get("https://ddragon.leagueoflegends.com/api/versions.json").json()
-        item_dict: dict = requests.get(f"http://ddragon.leagueoflegends.com/cdn/{latest_version}/data/en_US/item.json").json()
+        item_dict: dict = requests.get(
+            f"http://ddragon.leagueoflegends.com/cdn/{latest_version}/data/en_US/item.json"
+        ).json()
     except ConnectionError:
         print("Unable to talk to ddragon right now, please try again later.")
         return root
@@ -110,7 +110,8 @@ async def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
     await page.goto(url)
     # Wait for page to load
     await page.waitForSelector(
-        "#root > div > div.Wrapper_content__1wGv- > div.Wrapper_wrapper__3izJT > div.Summary_quick__3le_e > div.Summary_row1__3rZk8 > div:nth-child(1)"
+        "#root > div > div.Wrapper_content__1wGv- > div.Wrapper_wrapper__3izJT > \
+        div.Summary_quick__3le_e > div.Summary_row1__3rZk8 > div:nth-child(1)"
     )
     content = await page.content()
     await page.close()
@@ -118,7 +119,7 @@ async def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
     return BeautifulSoup(content, "html.parser")
 
 
-def lolalytics_runes(tag):
+def lolalytics_runes(tag) -> bool:
     """Function to get all tags with active runes from lolalytics.com"""
     if "data-type" in tag.attrs and "rune" in tag.attrs["data-type"]:
         return "class" in tag.attrs

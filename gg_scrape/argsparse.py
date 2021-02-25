@@ -1,11 +1,14 @@
+"""Parses the CLI arguments."""
+
 import time
 
 import typer
 
-from .champion_gg_scraper import champion_gg_scraper
-from .mobalytics_scraper import mobalytics_scraper
-from .lolalytics_scraper import lolalytics_scraper
-from .print_tree import print_tree
+from gg_scrape.champion_gg_scraper import champion_gg_scraper
+from gg_scrape.mobalytics_scraper import mobalytics_scraper
+from gg_scrape.lolalytics_scraper import lolalytics_scraper
+from gg_scrape.print_tree import print_tree
+
 
 ggs = typer.Typer()
 
@@ -18,6 +21,7 @@ def main(
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Show more verbose output"),
     scraper: str = typer.Option("champion.gg", "--scraper", "-s", help="Which site to scrape"),
 ):
+    """Parses CLI arguments, makes some requests, then tries to print a tree."""
 
     args = champion, role, matchup, verbose
     start = time.time()  # for funsies

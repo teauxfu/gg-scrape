@@ -1,10 +1,10 @@
+"""Scrapes interesting things from champion.gg"""
+
 import re
 
-from anytree import Node
-
-from bs4 import BeautifulSoup
-
 import requests
+from anytree import Node
+from bs4 import BeautifulSoup
 
 
 def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
@@ -70,12 +70,11 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
 
     # get skills
     skills = Node("Skill Priority", parent=root)
-    sel = "typography__Caption-sc-1mpsx83-11 typography__CaptionBold-sc-1mpsx83-12 dwtPBh"
+    selector = "typography__Caption-sc-1mpsx83-11 typography__CaptionBold-sc-1mpsx83-12 dwtPBh"
     # the first is 'Passive' and the rest are redundant
-    results = soup.find_all("p", class_=sel)[1:4]
+    results = soup.find_all("p", class_=selector)[1:4]
     for entry in results:
-        s = entry.text
-        Node(s, parent=skills)
+        Node(entry.text, parent=skills)
 
     # Summoner Spells
     summoners = Node("Summoner Spells", parent=root)
@@ -94,8 +93,8 @@ def champion_gg_scraper(champion: str, role: str, matchup: str, verbose: bool) -
 def champion_gg_runes(tag):
     """Filter function that returns true for tags with the names of Runes in Champion.gg"""
     if "class" in tag.attrs:
-        c = "ChampionRuneSmallCHGG__RuneName-sc-1vubct9-5"
-        if c in tag.attrs["class"] and not re.compile("sc-").search(tag.attrs["class"][1]):
+        match = "ChampionRuneSmallCHGG__RuneName-sc-1vubct9-5"
+        if match in tag.attrs["class"] and not re.compile("sc-").search(tag.attrs["class"][1]):
             return tag
 
 
