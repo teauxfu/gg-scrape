@@ -5,6 +5,7 @@
 - lolalytics scraper [PR#2](https://github.com/teauxfu/gg-scrape/pull/2) [PR#3](https://github.com/teauxfu/gg-scrape/pull/3)
 ### Changed
  - switched the default scraper to champion.gg
+ - mobalytics scraper shows skill learn order again, but only in verbose mode
 ### Fixed
  - a bug causing duplicate runes output for mobalytics
 
