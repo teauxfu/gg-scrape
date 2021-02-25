@@ -1,10 +1,10 @@
+"""Scrapes a build from Mobalytics.gg"""
+
 import re
 
-from anytree import Node
-
-from bs4 import BeautifulSoup
-
 import requests
+from anytree import Node
+from bs4 import BeautifulSoup
 
 
 def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) -> Node:
@@ -21,11 +21,9 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         role = ""
         soup = get_soup(champion, role)
 
-    c = soup.find("p", class_="css-1yvcufn eo6ba8g4").text
-    r = soup.find("div", class_="css-p3pzap eo6ba8g5").text
-
+    actual_role = soup.find("div", class_="css-p3pzap eo6ba8g5").text
     # create tree entries for default output
-    root = Node(f"{c} {r} from Mobalytics")
+    root = Node(f"{champion} {actual_role} from Mobalytics")
 
     # get the runes
     runes = Node("Runes", parent=root)
@@ -47,11 +45,10 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
         shards = Node("Shards", parent=root)
     for entry in matches:
         shard_id = entry["src"].split(".png")[0][-4:]  # was blah/####.png
-        shard = conversion.get(shard_id)
         if verbose:
-            Node(shard, parent=shards)
+            Node(conversion.get(shard_id), parent=shards)
         else:
-            Node(shard, parent=runes)
+            Node(conversion.get(shard_id), parent=runes)
 
     # get the build
     build = Node("Build", parent=root)
@@ -96,33 +93,35 @@ def mobalytics_scraper(champion: str, role: str, matchup: str, verbose: bool) ->
     summoners = Node("Summoner Spells", parent=root)
     matches = soup.find_all("img", class_="css-1xsdwvo edxc7l62")
     for entry in matches:
-        s = entry["src"].split(".png")[0].split("Summoner")[1]  # was blah/SummonerFoo.png
-        if s == "Dot":
-            s = "Ignite"
-        Node(s, parent=summoners)
+        spell = entry["src"].split(".png")[0].split("Summoner")[1]  # was blah/SummonerFoo.png
+        # todo #5 come find the others and add them 
+        if spell == "Dot":
+            spell = "Ignite"
+        if spell == "Haste":
+            spell = "Ghost"
+        Node(spell, parent=summoners)
 
     # Skill Learn Order
-    # for entry in soup.find_all("div", class_="css-70qvj9 ek7zqkr0")[0].contents:
-    #     if entry.name == "p":
-    #         Node(entry.text, skill)
+    if verbose:
+        learn_order = Node("Skill Learn Order", parent=root)
+        for entry in soup.find_all("div", class_="css-70qvj9 ek7zqkr0")[0].contents:
+            if entry.name == "p":
+                Node(entry.text, parent=learn_order)
 
     # Skill Max Order
-    skill = Node("Skill Priority", parent=root)
+    skills = Node("Skill Priority", parent=root)
     # this makes a list of the skill taken at each level
     sequence = [entry.text for entry in soup.find_all("div", class_="css-1dai7ia eaoplg14")]
-    # this dict has Q W E keys and values of the level when they get maxed
-    max_order = {}
-    for ability in ["Q", "W", "E"]:
-        max_order[ability] = [i for i, n in enumerate(sequence) if n == ability][-1]  # find the last of each
-    # iterate over values and copy keys in order of value magnitude
-    prio = []
-    for i in range(19):
-        if i in max_order.values():
-            prio.append((list(max_order.keys())[list(max_order.values()).index(i)]))
-    for item in prio:
-        Node(item, skill)
+    sequence.reverse()
+    max_order = []
+    for skill in sequence:
+        if not skill in max_order:
+            max_order.append(skill)
+    max_order.reverse()
+    max_order.remove("R")
+    for skill in max_order:
+        Node(skill, parent=skills)
 
-    # return tree
     return root
 
 
