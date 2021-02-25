@@ -120,6 +120,7 @@ async def get_soup(champion: str, role: str, matchup: str) -> BeautifulSoup:
 
 def lolalytics_runes(tag):
     """Function to get all tags with active runes from lolalytics.com"""
-    if "data-type" in tag.attrs:
-        if "rune" in tag.attrs["data-type"]:
-            return "class" in tag.attrs
+    if "data-type" in tag.attrs and "rune" in tag.attrs["data-type"]:
+        return "class" in tag.attrs
+    else:
+        return False
