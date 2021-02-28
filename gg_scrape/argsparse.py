@@ -22,6 +22,9 @@ def main(
     scraper: str = typer.Option("champion.gg", "--scraper", "-s", help="Which site to scrape"),
 ):
     """Parses CLI arguments, makes some requests, then tries to print a tree."""
+    
+    if champion == "j4":
+        champion = "jarvaniv"
 
     args = champion, role, matchup, verbose
     start = time.time()  # for funsies
