@@ -7,6 +7,8 @@ A little Python CLI app that provides a League of Legends champion build by scra
 The goal was to not have to open a browser tab (or be advertised to) to quickly check a build before a match.
 The HTML is requested and parsed sequentially, so it's somewhat slow (but still faster than opening a browser, probably).
 
+Note: this is a hobby project and not actively maintained, nor guaranteed to work 🤞
+
 ## Installation
 ```
 python -m pip install gg-scrape --user
